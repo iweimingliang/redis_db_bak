@@ -30,22 +30,22 @@ def read_iplist_conf(ip_filename):
     filename = open(ip_filename,'r')
     ip_dict = {}
     for i in filename.readlines():
-        master_ip,backup_ip,port,redis_passwd = i.strip().split(',')
-        ip_dict[master_ip] = backup_ip,port,redis_passwd
+        master_ip,backup_ip,port,redis_passwd,redis_src,redis_dst = i.strip().split(',')
+        ip_dict[master_ip] = backup_ip,port,redis_passwd,redis_src,redis_dst
     filename.close()
     return ip_dict
 
-def ssh_commnd(ip,port,username,passwd):
+def ssh_commnd(ip,port,username,passwd,redisbak_src,redisbak_dst):
     save_time = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S-%f")
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip,port,username,passwd)
 
-    dump_dst = '/home/xiuba/redis_db_bak/dump.rdb_' + save_time
-    appendonly_dst = '/home/xiuba/redis_db_bak/appendonly.aof_' + save_time
+    dump_dst = redisbak_dst + '/dump.rdb_' + ip + '_' + save_time
+    appendonly_dst = redisbak_dst + '/appendonly.aof_' + ip + '_' + save_time
 
-    dump_save = 'cp /var/lib/redis/dump.rdb ' + dump_dst 
-    appendonly_save = 'cp /var/lib/redis/appendonly.aof ' + appendonly_dst
+    dump_save = 'cp ' + redisbak_src + '/dump.rdb ' + dump_dst 
+    appendonly_save = 'cp ' + redisbak_src + '/appendonly.aof ' + appendonly_dst
 
     stdin, stdout, stderr = ssh.exec_command(dump_save)
     dump_status = 'succeed'
@@ -109,13 +109,13 @@ def ssh_commnd(ip,port,username,passwd):
 def redis_connect(redis_ip):
     for i in redis_ip.keys():
         master_ip = i
-        bak_ip,redis_port,redis_passwd = redis_ip[i]
+        bak_ip,redis_port,redis_passwd,redisbak_src,redisbak_dst = redis_ip[i]
         try: 
             redis_bakup = redis.Redis(host=master_ip, port=int(redis_port), password=redis_passwd)
+            log_write(access_log,'Redis connection is successful')
             chk_key = redis_bakup.get('redis_saof_bak')
             if chk_key == 'yes':
-                dump_result,appendonly_result = ssh_commnd(bak_ip,22,'root','xiuba123')
-                log_write(access_log,'Redis connection is successful')
+                dump_result,appendonly_result = ssh_commnd(bak_ip,22,'root','xiuba123',redisbak_src,redisbak_dst)
                 if dump_result != 'succeed'  or appendonly_result != 'succeed':
                     send_mail(mail_host,mail_user,mail_pass,mail_postfix,mail_addresser,to_list,'reids_bak_failed','Redis persistence backup error, please see the log') 
             else:
