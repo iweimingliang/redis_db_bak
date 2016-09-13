@@ -153,7 +153,13 @@ def log_write(log_file,conment,ip="None_ip"):
     f.flush()
     f.close()
 
+def procedure_execute():
+    shijian = datetime.datetime.now().strftime("%H%M")  
+    if shijian == '1030':
+        send_mail(mail_host,mail_user,mail_pass,mail_postfix,mail_addresser,to_list,'Redis_backup_program_run','192.168.1.201 Redis backup program run') 
+
 if __name__ == "__main__":
+    procedure_execute()
     ip_filename = '/root/redis_db_bak/ip_list.conf'
     f = open('redis_bak_access.log','a')
     ipdict = read_iplist_conf(ip_filename)
