@@ -128,8 +128,8 @@ def log_write(log_file,conment,conment_2=''):
 
 def procedure_execute():
     shijian = datetime.datetime.now().strftime("%H%M")  
-    if shijian == '1030':
-        send_mail(mail_host,mail_user,mail_pass,mail_postfix,mail_addresser,to_list,'Redis_backup_program_run','192.168.1.201 Redis backup program run') 
+    if shijian > 1000 and shijian < 1200:
+        send_mail(mail_host,mail_user,mail_pass,mail_postfix,mail_addresser,mailto_list,'Redis backup','Redis backup procedures have been executed') 
 
 if __name__ == "__main__":
     ip_filename = '/root/redis_db_bak/ip_list.conf'

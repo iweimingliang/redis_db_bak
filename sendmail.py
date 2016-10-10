@@ -13,10 +13,6 @@ mail_sub = "zhuti"
 mail_content = "neirong"
 
 
-def procedure_execute():
-    shijian = datetime.datetime.now().strftime("%H%M")  
-    if shijian == '1205':
-        send_mail(mail_host,mail_user,mail_pass,mail_postfix,mail_addresser,to_list,'test','192.168.1.201 test') 
   
 def send_mail(mail_host,mail_user,mail_pass,mail_postfix,mail_addresser,to_list,sub,content):  
     me=mail_addresser+"<"+mail_user+"@"+mail_postfix+">"  
