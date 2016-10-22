@@ -16,11 +16,11 @@ sys.setdefaultencoding( "utf-8" )
 
 
 to_list = ['xiu8idc@xiu8.com','xiaowen@xiu8.com'] 
-mail_host = "mail.xiu8.com"  #设置服务器
-mail_user = "xiu8idc@xiu8.com"    #用户名
-mail_pass = "FGJAxJdLQg"   #口令 
-mail_postfix = "xiu8.com"  #发件箱的后缀
-mail_addresser = "redis_xiu8idc"
+mail_host = "mail.test.com"  #设置服务器
+mail_user = "test@test.com"    #用户名
+mail_pass = "test"   #口令 
+mail_postfix = "test.com"  #发件箱的后缀
+mail_addresser = "test"
 log = '/root/redis_db_bak/redis_bak_error.log'
 access_log = '/root/redis_db_bak/redis_bak_access.log'
 dump_filename = '/root/redis_db_bak/dump_filename'
@@ -93,7 +93,7 @@ def redis_connect(redis_ip):
             log_write(access_log,'Redis connection is successful')
             chk_key = redis_bakup.get('redis_saof_bak')
             if chk_key == 'yes':
-                dump_result,appendonly_result = ssh_commnd(bak_ip,22,'root','xiuba123',redisbak_src,redisbak_dst,redis_port)
+                dump_result,appendonly_result = ssh_commnd(bak_ip,22,'root','test',redisbak_src,redisbak_dst,redis_port)
                 if dump_result != 'succeed'  or appendonly_result != 'succeed':
                     send_mail(mail_host,mail_user,mail_pass,mail_postfix,mail_addresser,to_list,'reids_bak_failed','192.168.1.201 Redis persistence backup error, please see the log') 
             else:
