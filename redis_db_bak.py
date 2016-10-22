@@ -15,7 +15,7 @@ reload(sys)
 sys.setdefaultencoding( "utf-8" )
 
 
-to_list = ['xiu8idc@xiu8.com','xiaowen@xiu8.com'] 
+to_list = ['test@test.com','test@test.com'] 
 mail_host = "mail.test.com"  #设置服务器
 mail_user = "test@test.com"    #用户名
 mail_pass = "test"   #口令 
