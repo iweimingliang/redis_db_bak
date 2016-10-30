@@ -3,12 +3,12 @@
 
 import smtplib  
 from email.mime.text import MIMEText  
-mailto_list = ['xiu8idc@xiu8.com','xiaowen@xiu8.com'] 
-mail_host = "mail.xiu8.com"  #设置服务器
-mail_user = "xiu8idc@xiu8.com"    #用户名
-mail_pass = "FGJAxJdLQg"   #口令 
-mail_postfix = "xiu8.com"  #发件箱的后缀
-mail_addresser = "xiu8idc"
+mailto_list = ['test@qq.com','test1@qq.com'] 
+mail_host = "mail.qq.com"  #设置服务器
+mail_user = "test@qq.com"    #用户名
+mail_pass = "123456"   #口令 
+mail_postfix = "qq.com"  #发件箱的后缀
+mail_addresser = "test"
 mail_sub = "zhuti"
 mail_content = "neirong"
 
